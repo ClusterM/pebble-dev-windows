@@ -3,6 +3,7 @@
 A special Docker image for working with the Pebble SDK (for Pebble watches) on Windows.  
 Includes Pebble SDK + emulator + debugging tools + Chromium + helper scripts.
 
+<img width="896" height="275" alt="image" src="https://github.com/user-attachments/assets/86082d2b-4655-4af1-90e4-de013c45d3e4" />
 
 ## Features
 
@@ -82,3 +83,4 @@ Examples:
 * [Sber](https://messenger.online.sberbank.ru/sl/Lnb2OLE4JsyiEhQgC)
 * [Donation Alerts](https://www.donationalerts.com/r/clustermeerkat)
 * [Boosty](https://boosty.to/cluster)
+

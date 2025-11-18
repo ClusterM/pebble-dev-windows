@@ -2,6 +2,9 @@
 
 SET IMAGE=clustermeerkat/pebble-dev-windows:1.1
 
+rem Maximum inactivity time in minutes
+SET STOP_AFTER=30
+
 rem Generate container name based on current directory full path
 setlocal enabledelayedexpansion
 set "CONTAINER_NAME=!CD!"
@@ -36,7 +39,7 @@ docker inspect %CONTAINER_NAME% >nul 2>&1
 if errorlevel 1 (
     rem Container doesn't exist, create it
     echo Creating container %CONTAINER_NAME%
-    docker run -d --name=%CONTAINER_NAME% --restart=no -v ./:/app -v /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix %IMAGE%
+    docker run -d --name=%CONTAINER_NAME% --restart=no -v ./:/app -v /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix -e STOP_AFTER=%STOP_AFTER% %IMAGE%
 ) else (
     rem Container exists, check if it's running
     set "CONTAINER_RUNNING="

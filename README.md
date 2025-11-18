@@ -3,13 +3,35 @@
 A special Docker image for working with the Pebble SDK (for Pebble watches) on Windows.  
 Includes Pebble SDK + emulator + debugging tools + Chromium + helper scripts.
 
-## ✅ Features
+
+## Features
 
 * Runs the Pebble SDK in a container on Windows via WSL2.
-* **No need to install a full Linux distribution on WSL** — you can skip adding Ubuntu/Debian/etc. (Docker Desktop handles it) 🐾
-* Supports building watch-apps and watch-faces.
-* Includes graphical emulator support (via X11/WSLg) and Chromium for the config app.
-* Clean volume mount so you work in your project directory.
+* **No need to install a full Linux distribution on WSL** — you can skip adding Ubuntu/Debian/etc.
+* Ability to use `pebble` command just like on Linux
+* **Working graphical emulator** (`pebble install --emulator ...` command)
+* **Working configuration pages via emulator**  (`pebble emu-app-config ...` command), thanks to the built-in Chromium browser.
+* **Smart URL handling** — automatic tweaks for proper handling of configuration pages with `data:text/html...` URLs.
+* **Debugging support** — includes `gdb-multiarch`, so `pebble gdb ...` command works like a charm.
+
+
+## How it works
+
+The `pebble.cmd` script provides seamless container management, so you don't need to worry about Docker commands.
+
+When you run `pebble.cmd`, it automatically:
+  * Makes up a container name based on the current directory path (your project path), so it's unique for each project, even if you use a single `pebble.cmd` file
+  * Creates a new container if one doesn't exist for the current directory, mounts the current directory (project directory) into the container
+  * Starts the container if it exists but is stopped
+  * Uses the running container to execute `pebble` command, automatically passes all command line arguments to the Pebble SDK inside the container
+  * Automatically stops the container if `pebble` command is not used for some time (30 minutes by default)
+
+It also has additional command line arguments:
+  * `pebble docker-stop` — stops the container
+  * `pebble docker-rm` — removes the container
+
+This design ensures containers don't consume resources when idle, while keeping them ready for immediate use when you're actively developing. Multiple `pebble` command instances can communicate with each other inside the container, so you can run `pebble install --emulator ...` and then `pebble emu-app-config ...` or `pebble gdb ...`.
+
 
 ## 🔧 Prerequisites
 
@@ -35,16 +57,12 @@ Before using this image, please ensure you have the following set up:
 3. In **Settings → Resources → WSL Integration**, make sure integration is enabled (for the default distro if you have one).
 4. Restart Docker Desktop if required.
 
-## 🏁 Usage
 
-Once WSL2 + Docker Desktop are ready, you can get started:
+## Usage
 
-### Create a helper script
-
-Download a file named `pebble.cmd`: https://raw.githubusercontent.com/ClusterM/pebble-dev-windows/refs/heads/master/pebble.cmd
+Download a file named `pebble.cmd` on the [GitHub Releases page](https://github.com/ClusterM/pebble-dev-windows/releases).
 
 Place this file either:
-
 * In your project directory (so you can run it locally) or
 * In a folder included in your `PATH` (so you can invoke `pebble.cmd` from anywhere).
 
@@ -56,8 +74,11 @@ Examples:
 * `pebble install --phone 10.13.14.15` – installs the app to a real Pebble watch connected via phone (use your phone IP).
 * `pebble new-project MyWatchApp` – creates new project.
 
-## 📂 Notes & Tips
 
-* The `-v ./:/app` mount ensures your host project folder is shared into the container at `/app`. All commands are executed inside the container in `/app`.
-* The `-v /run/desktop/mnt/host/wslg/.X11-unix:/tmp/.X11-unix` mount allows the GUI emulator (and Chromium) to display via WSLg/X11 on Windows.
-* The fact that you **don’t need to install a separate Linux distro** is a big plus — faster, less setup, fewer moving parts.
+## Support the Developer and the Project
+
+* [GitHub Sponsors](https://github.com/sponsors/ClusterM)
+* [Buy Me A Coffee](https://www.buymeacoffee.com/cluster)
+* [Sber](https://messenger.online.sberbank.ru/sl/Lnb2OLE4JsyiEhQgC)
+* [Donation Alerts](https://www.donationalerts.com/r/clustermeerkat)
+* [Boosty](https://boosty.to/cluster)

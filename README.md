@@ -34,7 +34,7 @@ It also has additional command line arguments:
 This design ensures containers don't consume resources when idle, while keeping them ready for immediate use when you're actively developing. Multiple `pebble` command instances can communicate with each other inside the container, so you can run `pebble install --emulator ...` and then `pebble emu-app-config ...` or `pebble gdb ...`.
 
 
-## 🔧 Prerequisites
+## Prerequisites
 
 Before using this image, please ensure you have the following set up:
 
@@ -83,4 +83,5 @@ Examples:
 * [Sber](https://messenger.online.sberbank.ru/sl/Lnb2OLE4JsyiEhQgC)
 * [Donation Alerts](https://www.donationalerts.com/r/clustermeerkat)
 * [Boosty](https://boosty.to/cluster)
+
 
